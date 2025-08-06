@@ -176,6 +176,25 @@ struct ContentView: View {
 }
 
 
+// For unit test to test essential features
+func generateMealCombo(proteins: [String], vegetables: [String], carbs: [String]) -> String {
+    guard !proteins.isEmpty, !vegetables.isEmpty, !carbs.isEmpty else {
+        return "Add at least one item to each category!"
+    }
+    
+    let protein = proteins.randomElement() ?? ""
+    let vegetable = vegetables.randomElement() ?? ""
+    let carb = carbs.randomElement() ?? ""
+    return "\(protein), \(vegetable), \(carb)"
+}
+
+func addIngredient(_ input: String, to list: inout [String]) {
+    if !input.isEmpty {
+        list.append(input)
+    }
+}
+
+//Creating a preview in Xcode
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

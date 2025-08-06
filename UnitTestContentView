@@ -1,0 +1,36 @@
+import XCTest
+@testable import ContentView
+
+final class ContentViewTests: XCTestCase {
+
+    func testAddIngredientAddsNonEmptyItem() {
+        var proteins = [String]()
+        addIngredient("Chicken", to: &proteins)
+        XCTAssertEqual(proteins, ["Chicken"])
+    }
+
+    func testAddIngredientDoesNotAddEmptyItem() {
+        var carbs = ["Rice"]
+        addIngredient("", to: &carbs)
+        XCTAssertEqual(carbs, ["Rice"]) // should stay the same
+    }
+
+    func testGenerateMealComboWithFullListsReturnsCombo() {
+        let proteins = ["Tofu"]
+        let vegetables = ["Broccoli"]
+        let carbs = ["Quinoa"]
+
+        let result = generateMealCombo(proteins: proteins, vegetables: vegetables, carbs: carbs)
+
+        let parts = result.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+        XCTAssertEqual(parts.count, 3)
+        XCTAssertTrue(proteins.contains(parts[0]))
+        XCTAssertTrue(vegetables.contains(parts[1]))
+        XCTAssertTrue(carbs.contains(parts[2]))
+    }
+
+    func testGenerateMealComboWithMissingCategoryShowsWarning() {
+        let result = generateMealCombo(proteins: [], vegetables: ["Broccoli"], carbs: ["Rice"])
+        XCTAssertEqual(result, "Add at least one item to each category!")
+    }
+}
